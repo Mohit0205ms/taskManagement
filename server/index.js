@@ -31,7 +31,3 @@ app.get('/',(req,res)=>{
 app.use('/api/auth',authRoute);
 app.use('/api',taskManagerRoute);
 
-
-app.listen((port || 8000),()=>{
-  console.log("server is running on port no 8000");
-})
