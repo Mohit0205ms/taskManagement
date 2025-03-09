@@ -25,7 +25,7 @@ mongoose
   });
 
 app.get('/',(req,res)=>{
-  res.send("hello world");
+  res.json("hello world");
 })
 
 app.use('/api/auth',authRoute);
