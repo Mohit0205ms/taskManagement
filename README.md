@@ -1,4 +1,4 @@
-### Setup Instruction
+# Setup Instruction
 
 ## Clone the Repository
 
@@ -6,7 +6,7 @@
 git clone https://github.com/yourusername/your-repo-name.git
 ```
 
-# Front-End
+### Front-End
 
 - Install the dependencies:
 
@@ -31,7 +31,7 @@ git clone https://github.com/yourusername/your-repo-name.git
 
 - In the terminal running the development server, press `i` to open the iOS simulator, `a` to open the Android device or emulator, or `w` to open the web browser.
 
-# Back-End
+### Back-End
 
 - Create a .env file in the root directory and add the following variables:
   ```sh
