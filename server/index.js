@@ -25,13 +25,10 @@ mongoose
   });
 
 app.get('/',(req,res)=>{
-  res.send("hello world");
+  res.json("hello world");
 })
 
 app.use('/api/auth',authRoute);
 app.use('/api',taskManagerRoute);
 
-
-app.listen((port || 8000),()=>{
-  console.log("server is running on port no 8000");
-})
+module.exports = app;
