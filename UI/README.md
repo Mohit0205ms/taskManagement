@@ -1,4 +1,4 @@
-## Running the app
+## Setup Instruction
 
 - Install the dependencies:
 
