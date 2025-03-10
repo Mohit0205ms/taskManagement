@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { 
   SafeAreaView, 
   StyleSheet, 
@@ -23,6 +23,26 @@ const OtpVerification = () => {
   const [otpSent, setOtpSent] = useState(false);
   const inputRefs = useRef([]);
   const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
+  const [countdown, setCountdown] = useState(300);
+  const [isResendDisabled,setIsResendDisabled] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (otpSent && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      setIsResendDisabled(false);
+    }
+    return () => clearInterval(timer);
+  }, [otpSent, countdown]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
+  };
 
   // Handle Email OTP Sending
   const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
@@ -37,6 +57,7 @@ const OtpVerification = () => {
       if (response.status >= 200 && response.status <= 209) {
         setOtpSent(true);
         setErrorMessage("");
+        setIsTimerActive(true);
       } else {
         alert(`${response.data.msg}`);
       }
@@ -154,7 +175,8 @@ const OtpVerification = () => {
                     showPrimaryButton={true} 
                     isLoadingPrimary={isLoadingPrimary}
                   />
-                  <TouchableOpacity onPress={handleResendOtp}>
+                  <Text style={styles.countdownText}>Resend OTP in {formatTime(countdown)}s</Text>
+                  <TouchableOpacity onPress={handleResendOtp} disabled={isResendDisabled}>
                     <Text style={styles.resendOtp}>Resend OTP</Text>
                   </TouchableOpacity>
                 </>
@@ -235,6 +257,12 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     textAlign: "center",
     marginTop: 15,
+  },
+  countdownText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "red",
+    marginBottom: 10,
   },
 });
 
