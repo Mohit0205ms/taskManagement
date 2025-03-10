@@ -12,6 +12,7 @@ const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
 
   const validatePassword = (password) => /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password);
 
@@ -28,16 +29,20 @@ const ResetPassword = () => {
         setErrorMessage('Passwords do not match.');
         return;
       }
+      setIsLoadingPrimary(true);
       const res = await resetPassword(newPassword,email);
       if(res.status >= 200 && res.status <= 209){
+        setIsLoadingPrimary(false);
         navigation.navigate('Login');
       }
       else{
         alert(`${res.msg}`);
+        setIsLoadingPrimary(false);
       }
     } catch (err) {
       console.log(err);
       alert("Something went wrong");
+      setIsLoadingPrimary(false);
     }
   };
 
@@ -74,6 +79,7 @@ const ResetPassword = () => {
                 primaryButtonText="Reset Password" 
                 primaryButtonAction={handleResetPassword} 
                 showPrimaryButton={true} 
+                isLoadingPrimary={isLoadingPrimary}
               />
               <Text style={styles.signUp} onPress={() => navigation.navigate("Login")}>
                 Back to Login

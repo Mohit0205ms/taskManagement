@@ -63,7 +63,7 @@ const NavigationStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='Signuo'
+        name='Signup'
         component={SignUp}
         options={{ headerShown: false }}
       />

@@ -9,7 +9,8 @@ const CustomButton = ({
   secondaryButtonAction, 
   showPrimaryButton = false, 
   showSecondaryButton = false,
-  isLoading = false,
+  isLoadingPrimary = false,
+  isLoadingSecondary = false,
 }) => {
   return (
     <View style={styles.buttonContainer}>
@@ -19,10 +20,10 @@ const CustomButton = ({
           onPress={primaryButtonAction}
           style={[styles.button, styles.primaryButton]}
           labelStyle={styles.primaryButtonText}
-          disabled={isLoading}
+          disabled={isLoadingPrimary}
         >
-          {!isLoading && primaryButtonText}
-          {isLoading && <ActivityIndicator size='small' color='white' />}
+          {!isLoadingPrimary && primaryButtonText}
+          {isLoadingPrimary && <ActivityIndicator size='small' color='white' />}
         </Button>
       )}
 
@@ -32,10 +33,10 @@ const CustomButton = ({
           onPress={secondaryButtonAction}
           style={[styles.button, styles.secondaryButton]}
           labelStyle={styles.secondaryButtonText}
-          disabled={isLoading}
+          disabled={isLoadingSecondary}
         >
-          {!isLoading && secondaryButtonText}
-          {isLoading && <ActivityIndicator size='small' color='white' />}
+          {!isLoadingSecondary && secondaryButtonText}
+          {isLoadingSecondary && <ActivityIndicator size='small' color='black' />}
         </Button>
       )}
     </View>

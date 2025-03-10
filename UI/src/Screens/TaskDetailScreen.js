@@ -26,12 +26,16 @@ const TaskDetailScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
+  const [isLoadingSecondary, setIsLoadingSecondary] = useState(false);
 
   // Delete Confirmation
   const deleteTask = async() =>{
     try {
+      setIsLoadingSecondary(true);
       const res = await deletePaticularTask(id);
       if (res.status >= 200 && res.status <= 209) {
+        setIsLoadingSecondary(false);
         alert(`${res.data.msg} \n Pull to refresh list`);
         navigation.goBack();
         return;
@@ -42,6 +46,7 @@ const TaskDetailScreen = () => {
       else{
         alert(`${res?.msg}`);
       }
+      setIsLoadingSecondary(false);
     } catch (err) {
       
     }
@@ -59,9 +64,11 @@ const TaskDetailScreen = () => {
 
   const handleUpdateTask = async () => {
     try {
+      setIsLoadingPrimary(true);
       const res = await editTask({id, title, desc: description});
       if(res.status >= 200 && res.status <= 209){
         setIsEditing(false);
+        setIsLoadingPrimary(false);
         const task={
           id: id,
           title: res.data.title,
@@ -77,6 +84,7 @@ const TaskDetailScreen = () => {
       else{
         alert(`${res?.msg}`);
       }
+      setIsLoadingPrimary(false);
     } catch (err) {
 
     }
@@ -163,6 +171,8 @@ const TaskDetailScreen = () => {
                 secondaryButtonAction={handleDeleteTask}
                 showPrimaryButton
                 showSecondaryButton
+                isLoadingPrimary={isLoadingPrimary}
+                isLoadingSecondary={isLoadingSecondary}
               />
             </>
           ) : (
@@ -170,6 +180,7 @@ const TaskDetailScreen = () => {
               primaryButtonText="Save Changes"
               primaryButtonAction={handleUpdateTask}
               showPrimaryButton
+              isLoadingPrimary={isLoadingPrimary}
             />
           )}
         </View>

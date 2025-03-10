@@ -15,11 +15,11 @@ const AddTaskScreen = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
 
   const handleAddTask = async() => {
     setErrorMessage("");
-    setIsLoading(true);
+    setIsLoadingPrimary(true);
     if (!title.trim()) return setErrorMessage("Title is required.");
     if (!description.trim()) return setErrorMessage("Description is required.");
     const res = await addTask({title,desc:description});
@@ -27,7 +27,7 @@ const AddTaskScreen = () => {
       await dispatch(addTaskInList({task: res.data}));
       setTitle('');
       setDescription('');
-      setIsLoading(false);
+      setIsLoadingPrimary(false);
       alert(`Task is added successfully`);
       navigation.goBack();
     }
@@ -38,6 +38,7 @@ const AddTaskScreen = () => {
       else{
         alert(`${res?.msg}`);
       }
+      setIsLoadingPrimary(false);
       return;
     }
   };
@@ -80,7 +81,7 @@ const AddTaskScreen = () => {
                 primaryButtonText="Add Task" 
                 primaryButtonAction={handleAddTask} 
                 showPrimaryButton={true} 
-                isLoading={isLoading}
+                isLoadingPrimary={isLoadingPrimary}
               />
             </Card.Content>
           </Card>
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 5, // Shadow for Android
+    elevation: 5,
   },
   title: {
     fontWeight: "bold",
@@ -125,11 +126,11 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     width: "100%",
-    height: 120, // Larger height for description
+    height: 120,
     marginBottom: 15,
     backgroundColor: "white",
     borderRadius: 32,
-    textAlignVertical: "top", // Ensures text starts from the top
+    textAlignVertical: "top",
   },
   errorText: {
     color: "red",

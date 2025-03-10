@@ -12,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
 
   const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
 
@@ -20,12 +21,13 @@ const Login = () => {
 
     if (!email.trim() || !validateEmail(email)) return setErrorMessage("Enter a valid Gmail email.");
     if (!password.trim()) return setErrorMessage("Password is required.");
-
+    setIsLoadingPrimary(true);
     const res = await loginUser({email, password});
 
     if(res.status >= 200 && res.status <= 209){
       setEmail('');
       setPassword('');
+      setIsLoadingPrimary(false);
       navigation.navigate('Home');
     }
     else{
@@ -35,19 +37,16 @@ const Login = () => {
       else{
         alert(`${res?.msg}`);
       }
+      setIsLoadingPrimary(false);
       return;
     }
   };
   const handleSignUpClick = () => {
-    navigation.navigate('Signuo')
+    navigation.navigate('Signup')
   }
 
   const handleResetPassword = async() => {
-    try{
-      navigation.navigate('OtpVerify');
-    }catch(err){
-      alert('something went wrong');
-    }
+    navigation.navigate('OtpVerify');
   }
 
   return (
@@ -86,6 +85,7 @@ const Login = () => {
                 primaryButtonText="Login" 
                 primaryButtonAction={handleLogin} 
                 showPrimaryButton={true} 
+                isLoadingPrimary={isLoadingPrimary}
               />
               <Text style={styles.signUp} onPress={handleSignUpClick}>signUp</Text>
             </Card.Content>

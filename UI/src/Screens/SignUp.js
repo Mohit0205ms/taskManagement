@@ -14,6 +14,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
 
   const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
 
@@ -27,7 +28,7 @@ const SignUp = () => {
     if (!password.trim() || !validatePassword(password)) 
       return setErrorMessage("Password must be 8+ characters, with 1 letter, 1 number, and 1 special character.");
     if (password !== confirmPassword) return setErrorMessage("Passwords do not match.");
-
+    setIsLoadingPrimary(true);
     const res = await registerUser({name, email, password})
     if(res.status >= 200 && res.status <= 209){
       setName('');
@@ -35,6 +36,7 @@ const SignUp = () => {
       setPassword('');
       setConfirmPassword('');
       setErrorMessage('');
+      setIsLoadingPrimary(false);
       navigation.navigate('Login');
     }
     else{
@@ -44,6 +46,7 @@ const SignUp = () => {
       else{
         alert(`${res.msg}`);
       }
+      setIsLoadingPrimary(false);
       return;
     }
   };
@@ -99,6 +102,7 @@ const SignUp = () => {
                 primaryButtonText="Register" 
                 primaryButtonAction={handleRegister} 
                 showPrimaryButton={true} 
+                isLoadingPrimary={isLoadingPrimary}
               />
               <Text style={styles.login} onPress={handleLoginClick}>login</Text>
             </Card.Content>

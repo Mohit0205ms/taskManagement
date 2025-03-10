@@ -22,6 +22,7 @@ const OtpVerification = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const inputRefs = useRef([]);
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
 
   // Handle Email OTP Sending
   const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
@@ -65,14 +66,18 @@ const OtpVerification = () => {
         return;
       }
       setErrorMessage("");
+      setIsLoadingPrimary(true);
       const res = await verifyOtp(email, enteredOtp);
       if (res.status >= 200 && res.status <= 209) {
+        setIsLoadingPrimary(false);
         navigation.navigate("ResetPassword",{email});
       } else {
         alert(`${res.msg}`);
+        setIsLoadingPrimary(false);
       }
     } catch (err) {
       alert("Something went wrong");
+      setIsLoadingPrimary(false);
     }
   };
 
@@ -147,6 +152,7 @@ const OtpVerification = () => {
                     primaryButtonText="Verify OTP" 
                     primaryButtonAction={handleVerifyOtp} 
                     showPrimaryButton={true} 
+                    isLoadingPrimary={isLoadingPrimary}
                   />
                   <TouchableOpacity onPress={handleResendOtp}>
                     <Text style={styles.resendOtp}>Resend OTP</Text>
